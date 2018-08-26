@@ -1,21 +1,19 @@
 #![feature(use_extern_macros)]
 #![allow(dead_code)]
 
-mod shader;
-mod context;
-mod buffer;
-
 extern crate wasm_bindgen;
-use wasm_bindgen::prelude::*;
-
-use context::Context;
-
-use shader::{Shader, VertexShader, FragmentShader};
-
-use buffer::{Buffer, ArrayBuffer, ElementBuffer};
 
 use std::rc::Rc;
+use wasm_bindgen::prelude::*;
+use context::Context;
+use shader::{Shader, VertexShader, FragmentShader, Program};
+use buffer::{Buffer, ArrayBuffer, ElementBuffer};
 
+pub mod shader;
+pub mod context;
+pub mod buffer;
+
+// Misc javascript imports
 #[wasm_bindgen]
 extern {
     fn alert(s: &str);
@@ -27,6 +25,7 @@ extern {
     fn test(x: &[u32]);
 }
 
+// HTMLCanvas bindings
 #[wasm_bindgen]
 extern {
     pub type HTMLCanvasElement;
@@ -45,15 +44,19 @@ extern {
 
     #[wasm_bindgen(module = "./js/glue")]
     fn _get_webgl_rendering_context(canvas: &HTMLCanvasElement) -> Option<WebGLRenderingContext>;
+
+    #[wasm_bindgen(module = "./js/glue")]
     fn _get_2d_rendering_context(canvas: &HTMLCanvasElement) -> Option<Canvas2DRenderingContext>;
 }
 
+// Additional/custom HTMLCanvas methods
 impl HTMLCanvasElement {
     pub fn get_webgl_rendering_context(self: &HTMLCanvasElement) -> Option<WebGLRenderingContext> {
         _get_webgl_rendering_context(self)
     }
 }
 
+// WebGLRenderingContext (i.e., webgl1) bindings
 #[wasm_bindgen]
 extern "C" {
     pub type WebGLRenderingContext;
@@ -70,11 +73,20 @@ extern "C" {
     #[wasm_bindgen(method, js_name = getShaderInfoLog)]
     pub fn get_shader_info_log(this: &WebGLRenderingContext, shader: &WebGLShader) -> String;
 
+    #[wasm_bindgen(method, js_name = createProgram)]
+    pub fn create_program(this: &WebGLRenderingContext) -> WebGLProgram;
+
     #[wasm_bindgen(method, js_name = createBuffer)]
     pub fn create_buffer(this: &WebGLRenderingContext) -> WebGLBuffer;
 
+    #[wasm_bindgen(method, js_name = deleteBuffer)]
+    pub fn delete_buffer(this: &WebGLRenderingContext, buffer: &WebGLBuffer);
+
     #[wasm_bindgen(method, js_name = bindBuffer)]
     pub fn bind_buffer(this: &WebGLRenderingContext, target: u32, buffer: &WebGLBuffer);
+
+    #[wasm_bindgen(method, js_name = bufferData)]
+    pub fn buffer_data_array_f32(this: &WebGLRenderingContext, target: u32, data: &[f32], usage: u32);
 
     // Constants
     #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
@@ -88,39 +100,49 @@ extern "C" {
 
     #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
     pub fn ELEMENT_ARRAY_BUFFER() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn STATIC_DRAW() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn DYNAMIC_DRAW() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn STREAM_DRAW() -> u32;
 }
 
+/// Shorthand for WebGLRenderingContext.
 pub type GL = WebGLRenderingContext;
 
+/// Binding for associated WebGL types.
 #[wasm_bindgen]
 extern {
     pub type WebGLShader;
+    pub type WebGLProgram;
     pub type WebGLBuffer;
 }
 
-#[wasm_bindgen]
-extern {
-    pub type WebGLProgram;
-}
-
-
+/// Binding for canvas context.
 #[wasm_bindgen]
 extern {
     pub type Canvas2DRenderingContext;
 }
 
 
+// ----------> Prototyping area <------------ //
+
 #[wasm_bindgen]
 pub fn test_get_context(canvas: &HTMLCanvasElement, context_type: &str) {
     let gl: WebGLRenderingContext = canvas.get_webgl_rendering_context().unwrap();
     let context = Context { gl };
     let context_rc = Rc::new(context);
-    let shader: Option<Shader<VertexShader>> = Shader::new(Rc::clone(&context_rc), "void main() { gl_Position = vec4(0.0); }");
+    let shader: Option<VertexShader> = Shader::new(Rc::clone(&context_rc), "void main() { gl_Position = vec4(0.0); }");
     let buffer: Option<ArrayBuffer> = Buffer::new(Rc::clone(&context_rc), vec![1.0]);
+    let program = Program::new(context_rc.clone(), "void main() { gl_Position = vec4(0.0); }", "void main() { gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); }");
 
-    match shader {
-        Some(_) => log("Shader compiled!"),
-        None => log("shader failed!")
+    match program {
+        Some(_) => log("Program compiled!"),
+        None => log("Program failed!")
     }
 }
 
@@ -130,6 +152,4 @@ pub fn greet(name: &str) {
     test(&vec![1, 2, 3, 4]);
 }
 
-
-// Shader code
-
+// ------------------------------------------ //

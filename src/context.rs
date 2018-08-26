@@ -1,10 +1,14 @@
+//! Module for handling the global rendering context.
+
 use { WebGLRenderingContext, WebGLShader };
 
+/// Represents the current rendering context.
 pub struct Context {
     pub gl: WebGLRenderingContext
 }
 
 impl Context {
+    /// Compiles a shader of a given type.
     pub fn compile_shader(self: &Context, source: &str, shader_type: u32) -> Option<WebGLShader> {
         let shader: WebGLShader = self.gl.create_shader(shader_type);
         self.gl.shader_source(&shader, source);

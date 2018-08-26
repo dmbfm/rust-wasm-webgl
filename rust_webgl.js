@@ -136,12 +136,28 @@ export function __wbg_getShaderInfoLog_a4499dc05c84b28c(ret, arg0, arg1) {
     
 }
 
+const __wbg_createProgram_7b4b055f3f5a0c66_target = WebGLRenderingContext.prototype.createProgram  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.createProgram does not exist`);
+} ;
+
+export function __wbg_createProgram_7b4b055f3f5a0c66(arg0) {
+    return addHeapObject(__wbg_createProgram_7b4b055f3f5a0c66_target.call(getObject(arg0)));
+}
+
 const __wbg_createBuffer_64c11cb8bdcbaa23_target = WebGLRenderingContext.prototype.createBuffer  || function() {
     throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.createBuffer does not exist`);
 } ;
 
 export function __wbg_createBuffer_64c11cb8bdcbaa23(arg0) {
     return addHeapObject(__wbg_createBuffer_64c11cb8bdcbaa23_target.call(getObject(arg0)));
+}
+
+const __wbg_deleteBuffer_dac31bbf04257393_target = WebGLRenderingContext.prototype.deleteBuffer  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.deleteBuffer does not exist`);
+} ;
+
+export function __wbg_deleteBuffer_dac31bbf04257393(arg0, arg1) {
+    __wbg_deleteBuffer_dac31bbf04257393_target.call(getObject(arg0), getObject(arg1));
 }
 
 const __wbg_bindBuffer_be58f2bfa54a23d5_target = WebGLRenderingContext.prototype.bindBuffer  || function() {
@@ -152,6 +168,27 @@ export function __wbg_bindBuffer_be58f2bfa54a23d5(arg0, arg1, arg2) {
     __wbg_bindBuffer_be58f2bfa54a23d5_target.call(getObject(arg0), arg1, getObject(arg2));
 }
 
+const __wbg_bufferData_3feaadc9f48faf9f_target = WebGLRenderingContext.prototype.bufferData  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.bufferData does not exist`);
+} ;
+
+let cachegetFloat32Memory = null;
+function getFloat32Memory() {
+    if (cachegetFloat32Memory === null || cachegetFloat32Memory.buffer !== wasm.memory.buffer) {
+        cachegetFloat32Memory = new Float32Array(wasm.memory.buffer);
+    }
+    return cachegetFloat32Memory;
+}
+
+function getArrayF32FromWasm(ptr, len) {
+    return getFloat32Memory().subarray(ptr / 4, ptr / 4 + len);
+}
+
+export function __wbg_bufferData_3feaadc9f48faf9f(arg0, arg1, arg2, arg3, arg4) {
+    let varg2 = getArrayF32FromWasm(arg2, arg3);
+    __wbg_bufferData_3feaadc9f48faf9f_target.call(getObject(arg0), arg1, varg2, arg4);
+}
+
 const __wbg_VERTEX_SHADER_9b64bf514a8fd9e3_target = function() {
     return WebGLRenderingContext.VERTEX_SHADER;
 }  ;
@@ -160,12 +197,28 @@ export function __wbg_VERTEX_SHADER_9b64bf514a8fd9e3() {
     return __wbg_VERTEX_SHADER_9b64bf514a8fd9e3_target();
 }
 
+const __wbg_FRAGMENT_SHADER_10f8f66781b1d336_target = function() {
+    return WebGLRenderingContext.FRAGMENT_SHADER;
+}  ;
+
+export function __wbg_FRAGMENT_SHADER_10f8f66781b1d336() {
+    return __wbg_FRAGMENT_SHADER_10f8f66781b1d336_target();
+}
+
 const __wbg_ARRAY_BUFFER_a745e64ed12e8949_target = function() {
     return WebGLRenderingContext.ARRAY_BUFFER;
 }  ;
 
 export function __wbg_ARRAY_BUFFER_a745e64ed12e8949() {
     return __wbg_ARRAY_BUFFER_a745e64ed12e8949_target();
+}
+
+const __wbg_STATIC_DRAW_acf790fde85b497a_target = function() {
+    return WebGLRenderingContext.STATIC_DRAW;
+}  ;
+
+export function __wbg_STATIC_DRAW_acf790fde85b497a() {
+    return __wbg_STATIC_DRAW_acf790fde85b497a_target();
 }
 
 function addBorrowedObject(obj) {
