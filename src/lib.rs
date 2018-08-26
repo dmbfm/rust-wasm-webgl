@@ -76,6 +76,21 @@ extern "C" {
     #[wasm_bindgen(method, js_name = createProgram)]
     pub fn create_program(this: &WebGLRenderingContext) -> WebGLProgram;
 
+    #[wasm_bindgen(method, js_name = attachShader)]
+    pub fn attach_shader(this: &WebGLRenderingContext, program: &WebGLProgram, shader: &WebGLShader);
+
+    #[wasm_bindgen(method, js_name = linkProgram)]
+    pub fn link_program(this: &WebGLRenderingContext, program: &WebGLProgram);
+
+    #[wasm_bindgen(method, js_name = useProgram)]
+    pub fn use_program(this: &WebGLRenderingContext, program: &WebGLProgram);
+
+    #[wasm_bindgen(method, js_name = getProgramParameter)]
+    pub fn get_program_parameter_b(this: &WebGLRenderingContext, program: &WebGLProgram, p_name: u32) -> bool;
+
+    #[wasm_bindgen(method, js_name = getProgramParameter)]
+    pub fn get_program_parameter_i(this: &WebGLRenderingContext, program: &WebGLProgram, p_name: u32) -> i32;
+
     #[wasm_bindgen(method, js_name = createBuffer)]
     pub fn create_buffer(this: &WebGLRenderingContext) -> WebGLBuffer;
 
@@ -109,6 +124,9 @@ extern "C" {
 
     #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
     pub fn STREAM_DRAW() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn LINK_STATUS() -> u32;
 }
 
 /// Shorthand for WebGLRenderingContext.

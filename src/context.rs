@@ -1,6 +1,6 @@
 //! Module for handling the global rendering context.
 
-use { WebGLRenderingContext, WebGLShader };
+use { WebGLRenderingContext, WebGLShader, WebGLProgram, GL };
 
 /// Represents the current rendering context.
 pub struct Context {
@@ -20,6 +20,22 @@ impl Context {
             None
         } else {
             Some(shader)
+        }
+    }
+
+    /// Links a shader program.
+    pub fn link_shader(self: &Context, v_shader: &WebGLShader, f_shader: &WebGLShader) -> Option<WebGLProgram> {
+        let program = self.gl.create_program();
+
+        self.gl.attach_shader(&program, &v_shader);
+        self.gl.attach_shader(&program, &f_shader);
+
+        self.gl.link_program(&program);
+
+        if self.gl.get_program_parameter_b(&program, GL::LINK_STATUS()) {
+            Some(program)
+        } else {
+            None
         }
     }
 }

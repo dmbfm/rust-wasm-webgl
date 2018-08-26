@@ -144,6 +144,30 @@ export function __wbg_createProgram_7b4b055f3f5a0c66(arg0) {
     return addHeapObject(__wbg_createProgram_7b4b055f3f5a0c66_target.call(getObject(arg0)));
 }
 
+const __wbg_attachShader_9defe6b18fc7326a_target = WebGLRenderingContext.prototype.attachShader  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.attachShader does not exist`);
+} ;
+
+export function __wbg_attachShader_9defe6b18fc7326a(arg0, arg1, arg2) {
+    __wbg_attachShader_9defe6b18fc7326a_target.call(getObject(arg0), getObject(arg1), getObject(arg2));
+}
+
+const __wbg_linkProgram_3ce7bd3987b47968_target = WebGLRenderingContext.prototype.linkProgram  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.linkProgram does not exist`);
+} ;
+
+export function __wbg_linkProgram_3ce7bd3987b47968(arg0, arg1) {
+    __wbg_linkProgram_3ce7bd3987b47968_target.call(getObject(arg0), getObject(arg1));
+}
+
+const __wbg_getProgramParameter_8927e423b26cb276_target = WebGLRenderingContext.prototype.getProgramParameter  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.getProgramParameter does not exist`);
+} ;
+
+export function __wbg_getProgramParameter_8927e423b26cb276(arg0, arg1, arg2) {
+    return __wbg_getProgramParameter_8927e423b26cb276_target.call(getObject(arg0), getObject(arg1), arg2) ? 1 : 0;
+}
+
 const __wbg_createBuffer_64c11cb8bdcbaa23_target = WebGLRenderingContext.prototype.createBuffer  || function() {
     throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.createBuffer does not exist`);
 } ;
@@ -219,6 +243,14 @@ const __wbg_STATIC_DRAW_acf790fde85b497a_target = function() {
 
 export function __wbg_STATIC_DRAW_acf790fde85b497a() {
     return __wbg_STATIC_DRAW_acf790fde85b497a_target();
+}
+
+const __wbg_LINK_STATUS_f1d3ed9958a634cc_target = function() {
+    return WebGLRenderingContext.LINK_STATUS;
+}  ;
+
+export function __wbg_LINK_STATUS_f1d3ed9958a634cc() {
+    return __wbg_LINK_STATUS_f1d3ed9958a634cc_target();
 }
 
 function addBorrowedObject(obj) {

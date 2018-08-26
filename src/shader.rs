@@ -84,14 +84,17 @@ impl Program {
         f_shader
             .and_then(
                 |f_shader|
-                    v_shader.map(
+                    v_shader.and_then(
                         |v_shader|
-                            Program {
-                                gl_program,
-                                context: context.clone(),
-                                v_shader,
-                                f_shader
-                            }
+                            context.link_shader(&v_shader.gl_shader, &f_shader.gl_shader).map(
+                                |gl_program|
+                                    Program {
+                                        gl_program,
+                                        context: context.clone(),
+                                        v_shader,
+                                        f_shader
+                                    }
+                            )
                     )
             )
     }
