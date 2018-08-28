@@ -1,3 +1,5 @@
+require('./js/vao-polyfill')
+
 const js = import('./rust_webgl')
 
 // Check if a variable is a function

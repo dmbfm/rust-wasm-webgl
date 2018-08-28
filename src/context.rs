@@ -2,12 +2,23 @@
 
 use { WebGLRenderingContext, WebGLShader, WebGLProgram, GL };
 
-/// Represents the current rendering context.
+pub enum WebGLContextVersion {
+    WebGL1,
+    WebGL2
+}
+
+/// Represents the current rendering context. @TODO: Add version and extension support (capabilities?)
 pub struct Context {
-    pub gl: WebGLRenderingContext
+    pub gl: WebGLRenderingContext,
+    // pub gl_version: WebGLContextVersion
+
 }
 
 impl Context {
+    pub fn new(gl: WebGLRenderingContext) -> Context {
+        Context { gl }
+    }
+
     /// Compiles a shader of a given type.
     pub fn compile_shader(self: &Context, source: &str, shader_type: u32) -> Option<WebGLShader> {
         let shader: WebGLShader = self.gl.create_shader(shader_type);

@@ -213,6 +213,14 @@ export function __wbg_bufferData_3feaadc9f48faf9f(arg0, arg1, arg2, arg3, arg4) 
     __wbg_bufferData_3feaadc9f48faf9f_target.call(getObject(arg0), arg1, varg2, arg4);
 }
 
+const __wbg_createVertexArray_485938570cdf935d_target = WebGLRenderingContext.prototype.createVertexArray  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.createVertexArray does not exist`);
+} ;
+
+export function __wbg_createVertexArray_485938570cdf935d(arg0) {
+    return addHeapObject(__wbg_createVertexArray_485938570cdf935d_target.call(getObject(arg0)));
+}
+
 const __wbg_VERTEX_SHADER_9b64bf514a8fd9e3_target = function() {
     return WebGLRenderingContext.VERTEX_SHADER;
 }  ;

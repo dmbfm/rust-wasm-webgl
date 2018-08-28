@@ -8,10 +8,12 @@ use wasm_bindgen::prelude::*;
 use context::Context;
 use shader::{Shader, VertexShader, FragmentShader, Program};
 use buffer::{Buffer, ArrayBuffer, ElementBuffer};
+use geometry::{ Geometry, vertex_p3 };
 
 pub mod shader;
 pub mod context;
 pub mod buffer;
+pub mod geometry;
 
 // Misc javascript imports
 #[wasm_bindgen]
@@ -103,6 +105,9 @@ extern "C" {
     #[wasm_bindgen(method, js_name = bufferData)]
     pub fn buffer_data_array_f32(this: &WebGLRenderingContext, target: u32, data: &[f32], usage: u32);
 
+    #[wasm_bindgen(method, js_name = createVertexArray)]
+    pub fn create_vertex_array(this: &WebGLRenderingContext) -> WebGLVertexArrayObject;
+
     // Constants
     #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
     pub fn VERTEX_SHADER() -> u32;
@@ -138,6 +143,7 @@ extern {
     pub type WebGLShader;
     pub type WebGLProgram;
     pub type WebGLBuffer;
+    pub type WebGLVertexArrayObject;
 }
 
 /// Binding for canvas context.
@@ -151,12 +157,20 @@ extern {
 
 #[wasm_bindgen]
 pub fn test_get_context(canvas: &HTMLCanvasElement, context_type: &str) {
+    let triangle = vec![
+        0.0, 0.0, 0.0,
+        0.0, 0.5, 0.0,
+        0.5, 0.5, 0.0
+    ];
+
     let gl: WebGLRenderingContext = canvas.get_webgl_rendering_context().unwrap();
     let context = Context { gl };
     let context_rc = Rc::new(context);
     let shader: Option<VertexShader> = Shader::new(Rc::clone(&context_rc), "void main() { gl_Position = vec4(0.0); }");
-    let buffer: Option<ArrayBuffer> = Buffer::new(Rc::clone(&context_rc), vec![1.0]);
+    let buffer: Option<ArrayBuffer> = Buffer::new(Rc::clone(&context_rc), triangle);
     let program = Program::new(context_rc.clone(), "void main() { gl_Position = vec4(0.0); }", "void main() { gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); }");
+
+    let triangle_geometry = Geometry::new(context_rc.clone(), vertex_p3(), buffer.unwrap(), None);
 
     match program {
         Some(_) => log("Program compiled!"),

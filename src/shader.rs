@@ -76,6 +76,7 @@ pub struct Program {
 }
 
 impl Program {
+    /// Creates and links a shader program from vertex and fragment shader source codes.
     pub fn new(context: Rc<Context>, v_source: &str, f_source: &str) -> Option<Program> {
         let f_shader = FragmentShader::new(context.clone(), f_source);
         let v_shader = VertexShader::new(context.clone(), v_source);
@@ -97,5 +98,10 @@ impl Program {
                             )
                     )
             )
+    }
+
+    /// Binds the current shader program for usage.
+    pub fn use_program(self: &Program) {
+        self.context.gl.use_program(&self.gl_program);
     }
 }
