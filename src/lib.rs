@@ -27,6 +27,14 @@ extern {
     fn test(x: &[u32]);
 }
 
+#[wasm_bindgen]
+extern {
+    pub type XXX;
+
+    #[wasm_bindgen(method, js_name = xxx)]
+    pub fn xxx(this: &XXX );
+}
+
 // HTMLCanvas bindings
 #[wasm_bindgen]
 extern {
@@ -105,8 +113,20 @@ extern "C" {
     #[wasm_bindgen(method, js_name = bufferData)]
     pub fn buffer_data_array_f32(this: &WebGLRenderingContext, target: u32, data: &[f32], usage: u32);
 
-    #[wasm_bindgen(method, js_name = createVertexArray)]
-    pub fn create_vertex_array(this: &WebGLRenderingContext) -> WebGLVertexArrayObject;
+    #[wasm_bindgen(method, js_name = enableVertexAttribArray)]
+    pub fn enable_vertex_attrib_array(this: &WebGLRenderingContext, index: u32);
+
+    /// The WebGLRenderingContext.vertexAttribPointer() method of the WebGL API binds the buffer
+    /// currently bound to gl.ARRAY_BUFFER to a generic vertex attribute of the current vertex
+    /// buffer object and specifies its layout.
+    ///
+    /// void gl.vertexAttribPointer(index, size, type, normalized, stride, offset)
+    #[wasm_bindgen(method, js_name = vertexAttribPointer)]
+    pub fn vertex_attrib_pointer(this: &WebGLRenderingContext, index: u32, size: u32, data_type: u32, normalized: bool, stride: u32, offset: u32);
+
+    // Extensions
+    #[wasm_bindgen(module = "./js/glue")]
+    pub fn _get_ext_oes_vertex_array_object(gl: &WebGLRenderingContext) -> Option<OES_vertex_array_object >;
 
     // Constants
     #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
@@ -132,6 +152,37 @@ extern "C" {
 
     #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
     pub fn LINK_STATUS() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn BYTE() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn SHORT() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn UNSIGNED_BYTE() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn UNSIGNED_SHORT() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn FLOAT() -> u32;
+
+}
+
+#[wasm_bindgen]
+extern {
+    pub type OES_vertex_array_object ;
+
+
+    #[wasm_bindgen(module = "./js/glue")]
+    pub fn _create_vertex_array_oes(oes: &OES_vertex_array_object) -> WebGLVertexArrayObject;
+
+    #[wasm_bindgen(module = "./js/glue")]
+    pub fn _bind_vertex_array_oes(oes: &OES_vertex_array_object, vao: &WebGLVertexArrayObject);
+
+    #[wasm_bindgen(module = "./js/glue")]
+    pub fn _delete_vertex_array_oes(oes: &OES_vertex_array_object, vao: WebGLVertexArrayObject);
 }
 
 /// Shorthand for WebGLRenderingContext.
@@ -164,7 +215,7 @@ pub fn test_get_context(canvas: &HTMLCanvasElement, context_type: &str) {
     ];
 
     let gl: WebGLRenderingContext = canvas.get_webgl_rendering_context().unwrap();
-    let context = Context { gl };
+    let context = Context::new(gl);
     let context_rc = Rc::new(context);
     let shader: Option<VertexShader> = Shader::new(Rc::clone(&context_rc), "void main() { gl_Position = vec4(0.0); }");
     let buffer: Option<ArrayBuffer> = Buffer::new(Rc::clone(&context_rc), triangle);

@@ -1,22 +1,47 @@
 //! Module for handling the global rendering context.
 
-use { WebGLRenderingContext, WebGLShader, WebGLProgram, GL };
-
-pub enum WebGLContextVersion {
-    WebGL1,
-    WebGL2
-}
+use {
+    WebGLRenderingContext,
+    WebGLShader,
+    WebGLProgram,
+    GL,
+    OES_vertex_array_object ,
+    WebGLVertexArrayObject,
+    _get_ext_oes_vertex_array_object,
+    _create_vertex_array_oes,
+    _delete_vertex_array_oes,
+    _bind_vertex_array_oes
+};
 
 /// Represents the current rendering context. @TODO: Add version and extension support (capabilities?)
 pub struct Context {
     pub gl: WebGLRenderingContext,
-    // pub gl_version: WebGLContextVersion
-
+    pub oes_vertex_array_object: OES_vertex_array_object
 }
 
 impl Context {
     pub fn new(gl: WebGLRenderingContext) -> Context {
-        Context { gl }
+        let oes_vertex_array_object = _get_ext_oes_vertex_array_object(&gl).unwrap();
+
+        Context {
+            gl,
+            oes_vertex_array_object
+        }
+    }
+
+    /// Creates a vertex array object.
+    pub fn create_vertex_array(self: &Context) -> WebGLVertexArrayObject {
+        _create_vertex_array_oes(&self.oes_vertex_array_object)
+    }
+
+    /// Deletes a vertex array object.
+    pub fn delete_vertex_array(self: &Context, vao: WebGLVertexArrayObject) {
+        _delete_vertex_array_oes(&self.oes_vertex_array_object, vao)
+    }
+
+    /// Binds a vertex array object.
+    pub fn bind_vertex_array(self: &Context, vao: &WebGLVertexArrayObject) {
+        _bind_vertex_array_oes(&self.oes_vertex_array_object, vao)
     }
 
     /// Compiles a shader of a given type.
