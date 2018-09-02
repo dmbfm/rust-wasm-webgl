@@ -16,17 +16,33 @@ use {
 /// Represents the current rendering context. @TODO: Add version and extension support (capabilities?)
 pub struct Context {
     pub gl: WebGLRenderingContext,
-    pub oes_vertex_array_object: OES_vertex_array_object
+    pub oes_vertex_array_object: OES_vertex_array_object,
+
+    clear_color: (f32, f32, f32, f32)
 }
+
+// TODO: Color clearing
+// TODO: Viewport
 
 impl Context {
     pub fn new(gl: WebGLRenderingContext) -> Context {
         let oes_vertex_array_object = _get_ext_oes_vertex_array_object(&gl).unwrap();
+        gl.clear_color(0.4, 0.4, 0.6, 1.0);
 
         Context {
             gl,
-            oes_vertex_array_object
+            oes_vertex_array_object,
+            clear_color: (0.4, 0.4, 0.6, 1.0)
         }
+    }
+
+    pub fn set_clear_color(self: &mut Context, r: f32, g: f32, b: f32, a: f32) {
+        self.clear_color = (r, g, b, a);
+        self.gl.clear_color(r, g, b, a);
+    }
+
+    pub fn clear(self: &Context) {
+        self.gl.clear(GL::COLOR_BUFFER_BIT());
     }
 
     /// Creates a vertex array object.

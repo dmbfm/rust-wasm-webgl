@@ -24,12 +24,13 @@ pub fn vertex_p4n3uv2() -> VertexLayout {
 }
 
 pub struct Geometry {
-    context: Rc<Context>,
-    layout: VertexLayout,
-    array_buffer: ArrayBuffer,
-    element_buffer: Option<ElementBuffer>,
+    pub context: Rc<Context>,
+    pub layout: VertexLayout,
+    pub array_buffer: ArrayBuffer,
+    pub element_buffer: Option<ElementBuffer>,
+    pub vertex_count: u32,
 
-    gl_vao: WebGLVertexArrayObject
+    pub gl_vao: WebGLVertexArrayObject
 }
 
 pub fn calculate_stride(layout: &VertexLayout) -> u32 {
@@ -37,6 +38,7 @@ pub fn calculate_stride(layout: &VertexLayout) -> u32 {
 }
 
 impl Geometry {
+    /// Creates a new Geometry
     pub fn new(
         context: Rc<Context>,
         layout: VertexLayout,
@@ -47,6 +49,7 @@ impl Geometry {
         context.bind_vertex_array(&gl_vao);
 
         let stride = calculate_stride(&layout);
+        let vertex_count = ((array_buffer.data.len() as u32) * 4) / stride;
 
         let mut offset: u32 = 0;
         for i in 0..layout.len() {
@@ -60,7 +63,13 @@ impl Geometry {
             layout,
             array_buffer,
             element_buffer,
+            vertex_count,
             gl_vao
         }
+    }
+
+    /// Binds the geometry for rendering
+    pub fn bind(self: &Geometry) {
+        self.context.bind_vertex_array(&self.gl_vao);
     }
 }

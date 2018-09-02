@@ -41,9 +41,10 @@ impl BufferArrayProvider<f32> for f32 {
 
 /// Represents a WebGL buffer of a given type (T) and of a given underlying number type (F).
 pub struct Buffer<T, F> {
-    gl_buffer: WebGLBuffer,
-    context: Rc<Context>,
-    data: Vec<F>,
+    pub gl_buffer: WebGLBuffer,
+    pub context: Rc<Context>,
+    pub data: Vec<F>,
+
     phantom: PhantomData<T>
 }
 

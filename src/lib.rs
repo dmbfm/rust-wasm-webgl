@@ -14,6 +14,7 @@ pub mod shader;
 pub mod context;
 pub mod buffer;
 pub mod geometry;
+pub mod mesh;
 
 // Misc javascript imports
 #[wasm_bindgen]
@@ -116,6 +117,15 @@ extern "C" {
     #[wasm_bindgen(method, js_name = enableVertexAttribArray)]
     pub fn enable_vertex_attrib_array(this: &WebGLRenderingContext, index: u32);
 
+    #[wasm_bindgen(method, js_name = clearColor)]
+    pub fn clear_color(this: &WebGLRenderingContext, r: f32, g: f32, b: f32, a: f32);
+
+    #[wasm_bindgen(method)]
+    pub fn clear(this: &WebGLRenderingContext, mask: u32);
+
+    #[wasm_bindgen(method, js_name = drawArrays)]
+    pub fn draw_arrays(this: &WebGLRenderingContext, mode: u32, first: u32, count: u32);
+
     /// The WebGLRenderingContext.vertexAttribPointer() method of the WebGL API binds the buffer
     /// currently bound to gl.ARRAY_BUFFER to a generic vertex attribute of the current vertex
     /// buffer object and specifies its layout.
@@ -168,6 +178,36 @@ extern "C" {
     #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
     pub fn FLOAT() -> u32;
 
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn COLOR_BUFFER_BIT() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn DEPTH_BUFFER_BIT() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn STENCIL_BUFFER_BIT() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn POINTS() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn LINE_STRIP() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn LINE_LOOP() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn LINES() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn TRIANGLE_STRIP() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn TRIANGLE_FAN() -> u32;
+
+    #[wasm_bindgen(static_method_of = WebGLRenderingContext, getter, structural)]
+    pub fn TRIANGLES() -> u32;
+
 }
 
 #[wasm_bindgen]
@@ -219,14 +259,19 @@ pub fn test_get_context(canvas: &HTMLCanvasElement, context_type: &str) {
     let context_rc = Rc::new(context);
     let shader: Option<VertexShader> = Shader::new(Rc::clone(&context_rc), "void main() { gl_Position = vec4(0.0); }");
     let buffer: Option<ArrayBuffer> = Buffer::new(Rc::clone(&context_rc), triangle);
-    let program = Program::new(context_rc.clone(), "void main() { gl_Position = vec4(0.0); }", "void main() { gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); }");
+    let program = Program::new(context_rc.clone(), "attribute vec3 pos; void main() { gl_Position = vec4(pos, 1.0); }", "void main() { gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); }").unwrap();
 
     let triangle_geometry = Geometry::new(context_rc.clone(), vertex_p3(), buffer.unwrap(), None);
 
-    match program {
-        Some(_) => log("Program compiled!"),
-        None => log("Program failed!")
-    }
+    let triangle_mesh = mesh::Mesh::new(context_rc.clone(), Rc::new(triangle_geometry), Rc::new(program));
+
+    context_rc.clear();
+    triangle_mesh.render();
+
+//    match program {
+//        Some(_) => log("Program compiled!"),
+//        None => log("Program failed!")
+//    }
 }
 
 #[wasm_bindgen]

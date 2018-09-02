@@ -163,6 +163,14 @@ export function __wbg_linkProgram_6080c97357fefb11(arg0, arg1) {
     __wbg_linkProgram_6080c97357fefb11_target.call(getObject(arg0), getObject(arg1));
 }
 
+const __wbg_useProgram_f7a5008e9ead271c_target = WebGLRenderingContext.prototype.useProgram  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.useProgram does not exist`);
+} ;
+
+export function __wbg_useProgram_f7a5008e9ead271c(arg0, arg1) {
+    __wbg_useProgram_f7a5008e9ead271c_target.call(getObject(arg0), getObject(arg1));
+}
+
 const __wbg_getProgramParameter_02d7992ca938244a_target = WebGLRenderingContext.prototype.getProgramParameter  || function() {
     throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.getProgramParameter does not exist`);
 } ;
@@ -222,6 +230,30 @@ const __wbg_enableVertexAttribArray_31a9186b2f4b39fc_target = WebGLRenderingCont
 
 export function __wbg_enableVertexAttribArray_31a9186b2f4b39fc(arg0, arg1) {
     __wbg_enableVertexAttribArray_31a9186b2f4b39fc_target.call(getObject(arg0), arg1);
+}
+
+const __wbg_clearColor_e55f5c61bc503b2d_target = WebGLRenderingContext.prototype.clearColor  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.clearColor does not exist`);
+} ;
+
+export function __wbg_clearColor_e55f5c61bc503b2d(arg0, arg1, arg2, arg3, arg4) {
+    __wbg_clearColor_e55f5c61bc503b2d_target.call(getObject(arg0), arg1, arg2, arg3, arg4);
+}
+
+const __wbg_clear_93147601418b8670_target = WebGLRenderingContext.prototype.clear  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.clear does not exist`);
+} ;
+
+export function __wbg_clear_93147601418b8670(arg0, arg1) {
+    __wbg_clear_93147601418b8670_target.call(getObject(arg0), arg1);
+}
+
+const __wbg_drawArrays_39c86682f38f0724_target = WebGLRenderingContext.prototype.drawArrays  || function() {
+    throw new Error(`wasm-bindgen: WebGLRenderingContext.prototype.drawArrays does not exist`);
+} ;
+
+export function __wbg_drawArrays_39c86682f38f0724(arg0, arg1, arg2, arg3) {
+    __wbg_drawArrays_39c86682f38f0724_target.call(getObject(arg0), arg1, arg2, arg3);
 }
 
 const __wbg_vertexAttribPointer_0d170b8075bcadc0_target = WebGLRenderingContext.prototype.vertexAttribPointer  || function() {
@@ -285,6 +317,22 @@ const __wbg_FLOAT_545ecf8057c65f3c_target = function() {
 
 export function __wbg_FLOAT_545ecf8057c65f3c() {
     return __wbg_FLOAT_545ecf8057c65f3c_target();
+}
+
+const __wbg_COLORBUFFERBIT_c136240930ea7aeb_target = function() {
+    return WebGLRenderingContext.COLOR_BUFFER_BIT;
+}  ;
+
+export function __wbg_COLORBUFFERBIT_c136240930ea7aeb() {
+    return __wbg_COLORBUFFERBIT_c136240930ea7aeb_target();
+}
+
+const __wbg_TRIANGLES_ea9892cfad4db60f_target = function() {
+    return WebGLRenderingContext.TRIANGLES;
+}  ;
+
+export function __wbg_TRIANGLES_ea9892cfad4db60f() {
+    return __wbg_TRIANGLES_ea9892cfad4db60f_target();
 }
 
 export function __wbg_createvertexarrayoes_885b73910c84e685(arg0) {
